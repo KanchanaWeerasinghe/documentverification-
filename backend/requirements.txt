@@ -1,0 +1,15 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+alembic
+psycopg2-binary
+python-docx
+sentence-transformers==2.2.2
+huggingface-hub<0.26
+transformers==4.35.2
+torch==2.2.0
+numpy<2
+celery[redis]
+python-multipart
+pgvector
+

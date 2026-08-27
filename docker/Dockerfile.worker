@@ -1,0 +1,33 @@
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN apt-get update \
+	&& apt-get install -y --no-install-recommends \
+	   build-essential \
+	   gcc \
+	   libpq-dev \
+	   git \
+	   curl \
+	&& rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+# Copy only requirements first to leverage Docker layer caching
+COPY backend/requirements.txt /app/requirements.txt
+
+RUN pip install --upgrade pip \
+	&& pip install --no-cache-dir -r /app/requirements.txt
+
+# Copy application code
+COPY backend /app/backend
+
+ENV PYTHONPATH=/app
+
+# Expose a uploads mount path (compose mounts a volume there)
+VOLUME ["/data/uploads"]
+
+# Default command is a no-op; `docker-compose` will override with the worker command
+CMD ["sh", "-c", "sleep infinity"]
+

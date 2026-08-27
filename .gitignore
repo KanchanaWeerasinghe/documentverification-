@@ -1,0 +1,61 @@
+
+# Python environments and caches
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Local databases, logs, and runtime files
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.pid
+
+# Uploaded medical documents and generated data
+backend/data/primary/*
+backend/data/references/*
+!backend/data/primary/.gitkeep
+!backend/data/references/.gitkeep
+uploads/
+data/processed/
+
+# Downloaded ML models and experiment outputs
+models/
+checkpoints/
+artifacts/
+*.pt
+*.pth
+*.bin
+*.onnx
+*.safetensors
+*.pkl
+*.pickle
+
+# Frontend and tooling output
+frontend/.streamlit/
+frontend/.cache/
+node_modules/
+dist/
+build/
+
+# Operating-system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/settings.json
+*.swp
+*.swo

@@ -1,0 +1,29 @@
+# Backend API and web server
+fastapi
+uvicorn[standard]
+python-multipart
+requests>=2.32,<3
+
+# Persistence and migrations
+sqlalchemy
+alembic
+psycopg2-binary
+pgvector
+
+# Document parsing
+python-docx
+PyPDF2
+pypdf>=4.0,<6
+
+# Asynchronous processing
+celery[redis]
+
+# Embeddings and numerical processing
+sentence-transformers==2.2.2
+huggingface-hub<0.26
+transformers==4.35.2
+torch==2.2.0
+numpy<2
+
+# Streamlit UI
+streamlit>=1.36,<2
