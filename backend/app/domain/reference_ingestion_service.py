@@ -4,6 +4,7 @@ from backend.app.db.session import SessionLocal
 from sentence_transformers import SentenceTransformer
 from docx import Document as DocxDocument
 import os
+from backend.app.ingestion.text_cleaner import clean_paragraphs
 
 
 class ReferenceIngestionService:
@@ -73,7 +74,7 @@ class ReferenceIngestionService:
         # For MVP, support DOCX only using python-docx
         if file_path.lower().endswith('.docx'):
             doc = DocxDocument(file_path)
-            paragraphs = [p.text.strip() for p in doc.paragraphs if p.text and p.text.strip()]
+            paragraphs = clean_paragraphs(p.text for p in doc.paragraphs)
             return {"paragraphs": paragraphs}
         else:
             # PDF support could be added later

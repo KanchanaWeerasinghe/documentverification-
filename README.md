@@ -20,7 +20,7 @@ The system follows this workflow:
 2. Load an institutional reference document.
 3. Upload or stage a primary PDF/DOCX document.
 4. Start a verification job.
-5. Process the job asynchronously through parsing, chunking, embedding, extraction, and verification stages.
+5. Process the job asynchronously through parsing, cleaning, chunking, embedding, extraction, and verification stages.
 6. Poll the job status from the Streamlit UI.
 7. Display extracted medications as `SUPPORTED`, `CONTRADICTED`, or `UNSUPPORTED`.
 8. Display the supporting reference passage, page, section, and chunk identifier when available.
@@ -104,6 +104,8 @@ DOCX parsing
     ↓
 Paragraph extraction
     ↓
+Basic text cleaning
+    ↓
 Monograph/section detection
     ↓
 Structure-aware chunking
@@ -123,9 +125,10 @@ Reference becomes available for retrieval
 4. The current endpoint selects the first `.docx` file in `REFERENCE_STORAGE_PATH`.
 5. The API creates a reference-document record and queues `reference_ingest_task`.
 6. The worker parses the DOCX into non-empty paragraphs.
-7. Short title-like paragraphs are treated as monograph boundaries.
-8. Each monograph is chunked and embedded.
-9. Chunks and metadata are stored in the reference chunk table.
+7. Basic cleaning normalizes whitespace and removes invisible extraction artifacts.
+8. Short title-like paragraphs are treated as monograph boundaries.
+9. Each monograph is chunked and embedded.
+10. Chunks and metadata are stored in the reference chunk table.
 
 ### Current MVP Constraint
 
@@ -141,6 +144,8 @@ Primary verification is performed by `DocumentVerificationService` in a Celery w
 Primary file
     ↓
 Parse PDF or DOCX
+    ↓
+Basic text cleaning
     ↓
 Chunk extracted text
     ↓

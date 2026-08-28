@@ -11,6 +11,7 @@ from backend.app.db.models.reference_chunk import ReferenceChunk
 from sentence_transformers import SentenceTransformer
 import re
 import logging
+from backend.app.ingestion.text_cleaner import clean_pages, clean_paragraphs, clean_text
 
 logger = logging.getLogger(__name__)
 
@@ -136,7 +137,7 @@ class DocumentVerificationService:
             try:
                 from docx import Document as DocxDocument
                 d = DocxDocument(path)
-                paras = [p.text for p in d.paragraphs if p.text and p.text.strip()]
+                paras = clean_paragraphs(p.text for p in d.paragraphs)
                 text = "\n".join(paras)
                 # DOCX doesn't provide reliable page numbers; leave pages empty
             except Exception:
@@ -148,13 +149,14 @@ class DocumentVerificationService:
                 for p in reader.pages:
                     ptext = p.extract_text() or ""
                     pages.append(ptext)
+                pages = clean_pages(pages)
                 text = "\n".join(pages)
             except Exception:
                 text = ""
         else:
             text = ""
 
-        return {"pages": pages, "text": text}
+        return {"pages": pages, "text": clean_text(text)}
 
     def _chunk_parsed(self, parsed: Dict[str, Any]) -> List[Dict[str, Any]]:
         # naive chunker: split by 2000 chars, preserve page if available
